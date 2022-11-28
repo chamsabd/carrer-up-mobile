@@ -17,6 +17,7 @@ class Formation {
       required this.nbrPlace,
       required this.prix});
 //Retourne un objet json et le convertir en un objet formation
+//factory
   factory Formation.fromJson(Map<String, dynamic> json) {
     return Formation(
         id: json["id"],
