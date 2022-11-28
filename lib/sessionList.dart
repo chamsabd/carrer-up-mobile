@@ -86,7 +86,7 @@ Widget SessionL(Session session) {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          session.idFormation.toString(),
+                      session.date_debut==null && session.date_fin==null?"":session.date_debut.toString() +" / "+session.date_fin.toString() ,
                           textAlign: TextAlign.start,
                           maxLines: 1,
                           overflow: TextOverflow.clip,
@@ -108,7 +108,7 @@ Widget SessionL(Session session) {
                           borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
-                          "Ideas",
+                          session.nbrplace.toString(),
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
