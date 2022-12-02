@@ -38,34 +38,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String url = 'http://192.168.1.7:8085/SESSION-SERVER/Sessions';
+  final String url = 'http://192.168.1.4:8085/SESSION-SERVER/Sessions';
 
   List<dynamic> _sessions = [];
 
   bool loading = true;
- 
 
   @override
   void initState() {
-     super.initState();
-   getsessionsFromServer();
-
-   
+    super.initState();
+    getsessionsFromServer();
   }
 
   Future<void> getsessionsFromServer() async {
-     debugPrint('movieTitle: in');
+    debugPrint('movieTitle: in');
     var response = await http.get(Uri.parse(url));
-         log(jsonDecode(response.body).toString());
+    log(jsonDecode(response.body).toString());
     if (response.statusCode == 200) {
-
-     
-      debugPrint('movieTitle: '+jsonDecode(response.body)["Sessions"].toString());
+      debugPrint(
+          'movieTitle: ' + jsonDecode(response.body)["Sessions"].toString());
       final parsed =
-        jsonDecode(response.body)["Sessions"].cast<Map<String, dynamic>>();
+          jsonDecode(response.body)["Sessions"].cast<Map<String, dynamic>>();
       _sessions =
           parsed.map<Session>((json) => Session.fromJson(json)).toList();
-       setState(() {
+      setState(() {
         loading = !loading;
       });
     } else {

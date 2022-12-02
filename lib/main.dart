@@ -1,308 +1,211 @@
-
-import 'package:flutter/material.dart';
-import 'package:flutter_project/Demande.dart';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import './Formation.dart';
+
+//import 'package:flutter_project_test/otherDetails.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:convert';
-import 'dart:developer';
 import 'getSessions.dart';
-import 'package:flutter/material.dart';
 
+//import 'CustomDialog.dart';
+//listes formations
+List<Formation> _formations = [];
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SessionsMain());
 }
 
-/*
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: MyHomePage(title: 'Flutter Demo Home Page'),
+//     );
+//   }
+// }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  final String title;
+//   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final String url = 'http://192.168.1.7:8085/DEMANDE-SERVER/demandes';
+// class _MyHomePageState extends State<MyHomePage> {
+//   int p = 0;
 
-  List<dynamic> _demandes = [];
-  bool loading = true;
-  @override
-  void initState() {
-    fetchDemandes();
-    super.initState();
-  }
+//   ///final String url = 'http://192.168.1.19:8085/FORMATION-SERVER/formations';
+//   final String url = 'http://192.168.1.7:8085/FORMATION-SERVER/formations';
 
-  Future<void> fetchDemandes() async {
-    var response = await http.get(
-      Uri.parse(url),
-    );
-    if (response.statusCode == 200) {
-      log(jsonDecode(response.body)["content"].toString());
-      log("helloo");
-      final parsed =
-          json.decode(response.body)["content"].cast<Map<String, dynamic>>();
-      log(parsed.toString());
-      _demandes =
-          parsed.map<Demande>((json) => Demande.fromJson(json)).toList();
-      log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-      log(_demandes.toString());
-      setState(() {
-        loading = !loading;
-      });
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
+//   bool loading = true;
+//   late Future<List<Formation>> futurePersons;
+//   @override
+//   void initState() {
+//     super.initState();
+//     futurePersons = fetchFormations();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: loading ? waitingScreen() : todosList(),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: IconButton(
-            icon: Icon(Icons.arrow_forward_ios),
-            onPressed: () {},
-            alignment: const Alignment(0.7, 0.0),
-            color: Color(0xff212435),
-            iconSize: 24,
-          )),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue[700],
-        selectedFontSize: 13,
-        unselectedFontSize: 13,
-        iconSize: 30,
-        items: [
-          BottomNavigationBarItem(
-            label: "Demandes",
-            icon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            label: "Stages",
-            icon: Icon(Icons.grid_view),
-          ),
-          BottomNavigationBarItem(
-            label: "Comptes",
-            icon: Icon(Icons.account_circle_outlined),
-          ),
-        ],
-      ),
-    );
-  }
+//   void _onItemTapped(int index) {
+//     setState(() {
+//       _selectedIndex = index;
+//     });
+//   }
 
-  Widget waitingScreen() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const <Widget>[
-          Text("Loading data ..."),
-          Padding(padding: EdgeInsets.only(bottom: 30)),
-          CircularProgressIndicator(),
-        ],
-      ),
-    );
-  }
+//   Future<List<Formation>> fetchFormations() async {
+//     var response = await http.get(Uri.parse(url));
+//     if (response.statusCode == 200) {
+//       log(jsonDecode(response.body)["content"].toString());
+//       debugPrint(jsonDecode(response.body)["content"].toString());
 
-  Widget todosList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.all(10),
-      shrinkWrap: true,
-      physics: ScrollPhysics(),
-      itemCount: _demandes.length,
-      itemBuilder: (context, index) {
-        Demande todo = _demandes[index];
-        return Card(
-            child: Container(
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 14),
-          padding: EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: Color(0xffffffff),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(15.0),
-            border: Border.all(color: Color(0x4d9e9e9e), width: 5),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Icon(
-                Icons.article,
-                color: Color(0xff3a57e8),
-                size: 50,
-              ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    todo.idSession.toString(),
-                                    textAlign: TextAlign.start,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 16,
-                                      color: Color(0xff000000),
-                                    ),
-                                  ),
-                                ),
-                                /* Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 8),
-                                  child: Icon(
-                                    Icons.push_pin,
-                                    color: Color(0xffffac00),
-                                    size: 20,
-                                  ),
-                                ),*/
-                              ],
-                            ),
-                          ),
-                          /*  Icon(
-                            Icons.more_horiz,
-                            color: Color(0xff212435),
-                            size: 20,
-                          ),*/
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                todo.date.toString(),
-                                textAlign: TextAlign.start,
-                                maxLines: 1,
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 14,
-                                  color: Color(0xff393939),
-                                ),
-                              ),
-                            ),
-                            /*  Container(
-                              margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: Color(0x343a57e8),
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                            ),*/
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.lightGreen,
-                    ),
-                    child: Text(
-                      "accept",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 5),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.deepPurple,
-                    ),
-                    child: Text(
-                      "refuse",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
-      },
-    );
-    */
+//       final parsed = json.decode(response.body)["content"] as List;
+//       _formations =
+//           parsed.map<Formation>((json) => Formation.fromJson(json)).toList();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+//       log(_formations.toString());
+//       p++;
+//       log(p.toString());
+//       return _formations;
+//     } else {
+//       throw Exception('Failed to load data');
+//     }
+//   }
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const SessionsMain();
+//   /// Set default number of rows to be displayed per page
+//   var _rowsPerPage = 3;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(widget.title),
+//       ),
+//       body: SafeArea(
+//         child: PaginatedDataTable(
+//           rowsPerPage: _rowsPerPage,
+//           source: RowSource(),
+//           onPageChanged: (int? n) {
+//             /// value of n is the number of rows displayed so far
+//             setState(() {
+//               if (n != null) {
+//                 debugPrint(
+//                     'onRowsPerPageChanged $_rowsPerPage ${RowSource()._rowCount - n}');
 
-  }
-}
+//                 /// Update rowsPerPage if the remaining count is less than the default rowsPerPage
+//                 if (RowSource()._rowCount - n < _rowsPerPage)
+//                   _rowsPerPage = RowSource()._rowCount - n;
+
+//                 /// else, restore default rowsPerPage value
+//                 else
+//                   _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
+//               } else
+//                 _rowsPerPage = 0;
+//             });
+//           },
+//           columns: [
+//             DataColumn(
+//               label: Text('ID'),
+//               numeric: true,
+//               /* onSort: ((columnIndex, ascending) {
+//                _sort<num>((formation) => formation.id, columnIndex, asc, _src, _provider);
+//             })
+//             */
+//             ),
+//             DataColumn(label: Text('nomFormation')),
+//             DataColumn(label: Text('date_Debut')),
+//             DataColumn(label: Text('Date-fin')),
+//             //  DataColumn(label: Text('Details')),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: BottomNavigationBar(
+//           type: BottomNavigationBarType.fixed,
+//           selectedItemColor: Colors.blue[700],
+//           selectedFontSize: 13,
+//           unselectedFontSize: 13,
+//           iconSize: 30,
+//           items: [
+//             BottomNavigationBarItem(
+//               label: "Formations",
+//               icon: Icon(Icons.home),
+//             ),
+//             BottomNavigationBarItem(
+//               label: "Comptes",
+//               icon: Icon(Icons.account_circle_outlined),
+//             ),
+//           ],
+//           currentIndex: _selectedIndex,
+//           onTap: _onItemTapped,
+//           elevation: 5),
+//     );
+//   }
+
+//   int _selectedIndex = 0;
+// }
+// // void _onItemTapped(int index) {
+// //     setState(() {
+
+// //     });
+// //   }
+// class RowSource extends DataTableSource {
+//   //List<Formation> _formations = fetchFormations();
+//   //bool loading = true;
+//   final _rowCount = 26;
+
+//   BuildContext get context => context;
+
+//   @override
+//   DataRow? getRow(int index) {
+//     Formation todo = _formations[index];
+//     log(todo.toString());
+//     log(_formations.length.toString());
+//     //_formations = fetchFormations();
+//     if (index < _rowCount) {
+//       return DataRow.byIndex(index: index, cells: <DataCell>[
+//         DataCell(Text("${_formations[index].id}")),
+//         DataCell(Text("${_formations[index].nom!}")),
+//         DataCell(Text("${_formations[index].dateDebut}")),
+//         DataCell(Text("${_formations[index].dateFin}")),
+//         /*DataCell(IconButton(
+//             hoverColor: Colors.transparent,
+//             splashColor: Colors.transparent,
+//             icon: const Icon(Icons.details),
+//             onPressed: () {
+//               //log(index.toString());
+//             }))
+//             */
+//       ]);
+//     } else {
+//       return null;
+//     }
+//   }
+
+//   @override
+//   bool get isRowCountApproximate => false;
+
+//   @override
+//   int get rowCount => _formations.length;
+
+//   @override
+//   int get selectedRowCount => 0;
+
+// /*   void sort<T>(Comparable<T> Function(Formation f), getField, bool ascending) {
+//     _formations.sort((a, b) {
+//       final aValue = getField(a);
+//       final bValue = getField(b);
+//       return ascending
+//           ? Comparable.compare(aValue, bValue)
+//           : Comparable.compare(bValue, aValue);
+//     });
+//     notifyListeners();
+//   } */
+// }
