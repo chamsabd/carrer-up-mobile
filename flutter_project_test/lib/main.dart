@@ -42,8 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int p = 0;
 
-  ///final String url = 'http://192.168.1.19:8085/FORMATION-SERVER/formations';
-  final String url = 'http://192.168.1.12:8085/FORMATION-SERVER/formations';
+  final String url = 'http:// 192.168.1.12:8085/FORMATION-SERVER/formations';
 
   bool loading = true;
   late Future<List<Formation>> futurePersons;
@@ -54,10 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<Formation>> fetchFormations() async {
-    var response = await http
-        .get(Uri.parse('http://192.168.1.12:8085/FORMATION-SERVER/formations'));
+    var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      log(jsonDecode(response.body)["content"].toString());
+      log(jsonDecode(response.body)["content"][0].toString());
       log("hjhjhjhjjjhj");
       final parsed = json.decode(response.body)["content"] as List;
       _formations =
@@ -73,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Set default number of rows to be displayed per page
-  var _rowsPerPage = 3;
+  int _rowsPerPage = 3;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,11 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
           columns: [
             DataColumn(
               label: Text('ID'),
-              numeric: true,
-              /* onSort: ((columnIndex, ascending) {
-               _sort<num>((formation) => formation.id, columnIndex, asc, _src, _provider);
-            })
-            */
             ),
             DataColumn(label: Text('nomFormation')),
             DataColumn(label: Text('date_Debut')),
@@ -144,11 +138,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class RowSource extends DataTableSource {
-  //List<Formation> _formations = fetchFormations();
-  //bool loading = true;
   final _rowCount = 26;
 
-  BuildContext get context => context;
+  //BuildContext get context => context;
 
   @override
   DataRow? getRow(int index) {
@@ -184,16 +176,4 @@ class RowSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
-
-/*   void sort<T>(Comparable<T> Function(Formation f), getField, bool ascending) {
-    _formations.sort((a, b) {
-      final aValue = getField(a);
-      final bValue = getField(b);
-      return ascending
-          ? Comparable.compare(aValue, bValue)
-          : Comparable.compare(bValue, aValue);
-    });
-    notifyListeners();
-  } */
-
 }
