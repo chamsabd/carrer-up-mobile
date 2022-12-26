@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'getDemandeList.dart';
+import 'getInscritList.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyDemandePage(title: 'Flutter Demo Home Page'),
+      /* routes: {
+        'getDemandeList': (context) => const MyDemandePage(
+              title: '',
+            ),
+        //'/getInscrit':(context) => const MyInscritPage(title: '',),
+      },*/
     );
   }
 }
