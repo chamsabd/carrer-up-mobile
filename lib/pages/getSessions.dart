@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import './sessionList.dart';
 
-import 'sessionList.dart';
 import 'package:http/http.dart' as http;
 
-import './session.dart';
+import '../modal/session.dart';
 
 // void main() {
 //   runApp(const SessionsMain());
@@ -43,29 +43,25 @@ class _MyHomePageState extends State<MyHomePage> {
   List<dynamic> _sessions = [];
 
   bool loading = true;
- 
 
   @override
   void initState() {
-     super.initState();
-   getsessionsFromServer();
-
-   
+    super.initState();
+    getsessionsFromServer();
   }
 
   Future<void> getsessionsFromServer() async {
-     debugPrint('movieTitle: in');
+    debugPrint('movieTitle: in');
     var response = await http.get(Uri.parse(url));
-         log(jsonDecode(response.body).toString());
+    log(jsonDecode(response.body).toString());
     if (response.statusCode == 200) {
-
-     
-      debugPrint('movieTitle: '+jsonDecode(response.body)["Sessions"].toString());
+      debugPrint(
+          'movieTitle: ' + jsonDecode(response.body)["Sessions"].toString());
       final parsed =
-        jsonDecode(response.body)["Sessions"].cast<Map<String, dynamic>>();
+          jsonDecode(response.body)["Sessions"].cast<Map<String, dynamic>>();
       _sessions =
           parsed.map<Session>((json) => Session.fromJson(json)).toList();
-       setState(() {
+      setState(() {
         loading = !loading;
       });
     } else {
