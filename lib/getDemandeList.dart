@@ -62,11 +62,22 @@ class _MyHomePageState extends State<MyDemandePage> {
         int trendIndex = _demandes.indexWhere((f) => f.id == id);
         _demandes[trendIndex].etat = "accepted";
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Demand accepted')),
+          const SnackBar(
+            content: Text('Demand accepted'),
+            backgroundColor: Colors.green,
+          ),
         );
       });
       return Demande.fromJson(jsonDecode(response.body));
     } else {
+      setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No More Places'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      });
       throw Exception('Failed to update demand');
     }
   }
@@ -87,7 +98,10 @@ class _MyHomePageState extends State<MyDemandePage> {
         int trendIndex = _demandes.indexWhere((f) => f.id == id);
         _demandes[trendIndex].etat = "refused";
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Demand Refused')),
+          const SnackBar(
+            content: Text('Demand Refused'),
+            backgroundColor: Colors.red,
+          ),
         );
       });
       return Demande.fromJson(jsonDecode(response.body));
