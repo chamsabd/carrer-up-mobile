@@ -1,6 +1,6 @@
 
 import 'package:pflutter/pages/Stages.dart';
-import 'package:pflutter/pages/addStage.dart';
+import 'package:pflutter/pages/addeditStage.dart';
 import 'package:pflutter/pages/editStage.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/': (context) =>  Stages(),
-        '/add-stage': (context) => const AddStage(),
-        '/edit-product': (context) => const EditStage(),
+        '/stage': (context) =>  Stages(),
+        '/add-stage': (context) => const AddEditStage(),
+       
       },
     );
   }
