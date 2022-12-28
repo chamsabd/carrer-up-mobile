@@ -136,7 +136,7 @@ class DetailFormation extends StatelessWidget {
                           padding: const EdgeInsets.all(0),
                           shrinkWrap: true,
                           physics: const ScrollPhysics(),
-                          itemCount: f.sessions.length,
+                          itemCount: f.sessions!.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               color: Colors.blue,
@@ -146,11 +146,12 @@ class DetailFormation extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               margin: EdgeInsets.all(20),
                               child: ListTile(
-                                title: Text(f.sessions[index].nom!),
+                                title: Text(f.sessions![index].nom!),
                                 subtitle:
-                                    Text("${f.sessions[index].date_debut}"),
-                                leading: Text("${f.sessions[index].date_fin}"),
-                                trailing: Text("${f.sessions[index].nbrplace}"),
+                                    Text("${f.sessions![index].date_debut}"),
+                                leading: Text("${f.sessions![index].date_fin}"),
+                                trailing:
+                                    Text("${f.sessions![index].nbrplace}"),
                               ),
                             );
                           },

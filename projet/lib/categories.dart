@@ -1,11 +1,14 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
+
+import 'HomeScreen.dart';
+import 'drawer.dart';
 
 class categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffffffff),
+      drawer: drawer(),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -23,10 +26,15 @@ class categories extends StatelessWidget {
             color: Color(0xff000000),
           ),
         ),
-        leading: Icon(
-          Icons.arrow_back,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
           color: Color(0xff212435),
-          size: 24,
+          onPressed: () {
+            Navigator.pop(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          },
         ),
       ),
       body: GridView(

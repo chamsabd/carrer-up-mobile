@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String url = 'http://192.168.1.12:8085/SESSION-SERVER/Sessions';
+  final String url = 'http://192.168.1.12:8085/FORMATION-SERVER/Sessions';
 
   List<dynamic> _sessions = [];
 

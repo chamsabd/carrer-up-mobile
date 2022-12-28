@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\tebou\\Documents\\carrerUp\\carrer-up-mobile\\projet\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-is\\values-is.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\tebou\\.gradle\\caches\\transforms-2\\files-2.1\\c1ebda589683e9beaa06b540aac78854\\core-1.6.0\\res\\values-is\\values-is.xml",
+                    "source": "C:\\Users\\tebou\\.gradle\\caches\\transforms-2\\files-2.1\\8bab233f672ffd45ac57596fd518001d\\core-1.8.0\\res\\values-is\\values-is.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

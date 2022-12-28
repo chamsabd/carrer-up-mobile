@@ -1,95 +1,120 @@
-///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
-
 import 'package:flutter/material.dart';
-import 'package:flutterviz/FormationDetail.dart';
+
+import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 import 'Formation.dart';
+import 'itemFormation.dart';
+import 'formationMain.dart';
+import 'fservice.dart';
 
-class FormationList extends StatelessWidget {
-  FormationList({required this.f});
-  final Formation f;
-  late BuildContext context;
+class Formationlist extends StatefulWidget {
+  const Formationlist({Key? key}) : super(key: key);
+
+  @override
+  _FormationlistState createState() => _FormationlistState();
+}
+
+class _FormationlistState extends State<Formationlist> {
+  // List<Formation> products = List<Formation>.empty(growable: true);
+  bool isApiCallProcess = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        child: Card(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-            color: Color.fromARGB(255, 153, 198, 252),
-            shadowColor: Color(0x4d939393),
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              f.nom!,
-                              textAlign: TextAlign.start,
-                              maxLines: 1,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 149, 163, 240),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
-                              child: Text(
-                                f.category!,
-                                textAlign: TextAlign.start,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16,
-                                  color: Color(0xff6c6c6c),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              "${f.prix}",
-                              textAlign: TextAlign.right,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16,
-                                color: Color(0xff6c6c6c),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('NodeJS - CRUD'),
+        elevation: 0,
+      ),
+      backgroundColor: Colors.grey[200],
+      body: ProgressHUD(
+        child: loadProducts(),
+        inAsyncCall: isApiCallProcess,
+        opacity: 0.3,
+        key: UniqueKey(),
+      ),
+    );
+  }
+
+  Widget loadProducts() {
+    return FutureBuilder<List<Formation>>(
+      future: Fservice.fetchFormations(),
+      initialData: [],
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<Formation>?> model,
+      ) {
+        if (model.hasData) {
+          return productList(model.data);
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  Widget productList(_formations) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary: Colors.green,
+                  minimumSize: const Size(88, 36),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
                     ),
-                  ]),
-            )),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailFormation(f: f),
-            ),
-          );
-        });
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/add-product',
+                  );
+                },
+                child: const Text('Add Product'),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemCount: _formations.length,
+                itemBuilder: (context, index) {
+                  return FormationItem(
+                    model: _formations[index],
+                    onDelete: (Formation model) {
+                      setState(() {
+                        isApiCallProcess = true;
+                      });
+
+                      Fservice.deleteFormation(model.id).then(
+                        (response) {
+                          setState(() {
+                            isApiCallProcess = false;
+                          });
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutterviz/HomeScreen.dart';
+import 'package:flutterviz/signup.dart';
+
+import 'FormationList.dart';
+import 'addFormation.dart';
+import 'formationMain.dart';
+import 'login.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,9 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CarrerUP',
-
-      /// TODO Replace with your first screen class name
-      home: HomeScreen(),
+      home: FormationAddEdit(),
     );
   }
 }
@@ -20,6 +24,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: HomeScreen());
+    return Scaffold();
   }
 }

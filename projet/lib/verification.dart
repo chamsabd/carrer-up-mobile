@@ -1,7 +1,8 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
-//import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class verification extends StatelessWidget {
   @override
@@ -36,7 +37,6 @@ class verification extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ///***If you have exported images you must have to copy those images in assets/images directory.
                 Image(
                   image: NetworkImage(
                       "https://cdn4.iconfinder.com/data/icons/avatar-users/512/Avatar_Users2_15-128.png"),
@@ -58,7 +58,6 @@ class verification extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 0),
                   child: Row(
@@ -93,26 +92,6 @@ class verification extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                MaterialButton(
-                  onPressed: () {},
-                  color: Color(0xff3a57e8),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    "Verify",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                    ),
-                  ),
-                  textColor: Color(0xffffffff),
-                  height: 50,
-                  minWidth: 150,
                 ),
               ],
             ),

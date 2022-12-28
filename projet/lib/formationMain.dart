@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutterviz/Session.dart';
+import 'package:flutterviz/config.dart';
 
 //import 'package:flutter_project_test/otherDetails.dart';
 import 'package:http/http.dart' as http;
@@ -23,10 +25,12 @@ class FormationPage extends StatefulWidget {
 }
 
 class FormationPageState extends State<FormationPage> {
-  final String url = 'http://192.168.1.12:8085/FORMATION-SERVER/formations/';
+  //final String url = 'http://192.168.1.12:8085/FORMATION-SERVER/formations/';
+  static var client = http.Client();
+  late Future<List<Formation>> futurePersons;
 
   bool loading = true;
-  late Future<List<Formation>> futurePersons;
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +38,11 @@ class FormationPageState extends State<FormationPage> {
   }
 
   Future<List<Formation>> fetchFormations() async {
-    var response = await http.get(Uri.parse(url));
+    //var response = await http.get(Uri.parse(url));
+    Map<String, String> requestHeaders = {'content-type': 'application/json'};
+    var url = Uri.http(Config.apiUrl, Config.formationUrl);
+    // ignore: close_sinks
+    var response = await client.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       log("ttttttttttttt");
       //log(jsonDecode(response.body)["content"].toString());
@@ -111,22 +119,6 @@ class FormationPageState extends State<FormationPage> {
                       ),
                     ),
                   ),
-                  ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    padding: const EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: const ScrollPhysics(),
-                    itemCount: _formations.length,
-                    itemBuilder: (context, position) {
-                      return Card(
-                        child: InkWell(
-                            child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: FormationList(f: _formations[position]),
-                        )),
-                      );
-                    },
-                  )
                 ]))));
   }
 }
