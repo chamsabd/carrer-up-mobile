@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:pflutter/Demande.dart';
+import '../config.dart';
+import '../modal/Demande.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
@@ -16,8 +17,8 @@ class MyDemandePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyDemandePage> {
-  final String url = 'http://192.168.1.6:8085/INSCRIT-SERVICE/inscrit';
-
+  //final String url = 'http://192.168.1.6:8085/INSCRIT-SERVICE/inscrit';
+var url = Uri.http(Config.apiURL, Config.inscritAPI);
   List<dynamic> _demandes = [];
   bool loading = true;
   @override
@@ -31,7 +32,7 @@ class _MyHomePageState extends State<MyDemandePage> {
 
   Future<void> fetchDemandes() async {
     var response = await http.get(
-      Uri.parse(url),
+     url
     );
 
     if (response.statusCode == 200) {
@@ -47,8 +48,9 @@ class _MyHomePageState extends State<MyDemandePage> {
   }
 
   Future<Demande> accepter(String id) async {
+    var url = Uri.http(Config.apiURL, Config.inscritAPI+"/accept");
     final response =
-        await http.put(Uri.parse('http://192.168.1.6:3001/inscrit/accept'),
+        await http.put(url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -83,8 +85,9 @@ class _MyHomePageState extends State<MyDemandePage> {
   }
 
   Future<Demande> refuser(String id) async {
+     var url = Uri.http(Config.apiURL, Config.inscritAPI+"/refuse");
     var response =
-        await http.put(Uri.parse('http://192.168.1.6:3001/inscrit/refuse'),
+        await http.put(url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },

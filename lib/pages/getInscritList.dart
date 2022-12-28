@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pflutter/Demande.dart';
+import '../config.dart';
+import '../modal/Demande.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
@@ -15,7 +16,8 @@ class MyInscritPage extends StatefulWidget {
 }
 
 class _MyInscritPageState extends State<MyInscritPage> {
-  final String url = 'http://192.168.1.6:8085/INSCRIT-SERVICE/inscrit/accepted';
+  var url = Uri.http(Config.apiURL, "${Config.inscritAPI}/accepted");
+  //final String url = 'http://192.168.1.6:8085/INSCRIT-SERVICE/inscrit/accepted';
 
   List<dynamic> _inscrits = [];
   bool loading = true;
@@ -28,7 +30,7 @@ class _MyInscritPageState extends State<MyInscritPage> {
 
   Future<void> fetchInscrits() async {
     var response = await http.get(
-      Uri.parse(url),
+   url
     );
 
     if (response.statusCode == 200) {

@@ -4,8 +4,8 @@ import 'package:pflutter/pages/Stages.dart';
 import 'package:pflutter/pages/addeditStage.dart';
 
 import 'package:flutter/material.dart';
-import 'getDemandeList.dart';
-import 'getInscritList.dart';
+import 'package:pflutter/pages/getDemandeList.dart';
+import 'package:pflutter/pages/getInscritList.dart';
 
 import 'pages/signup.dart';
 
