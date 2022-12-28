@@ -1,14 +1,17 @@
-
+import 'pages/formationMain.dart';
 import 'package:pflutter/pages/Stages.dart';
 import 'package:pflutter/pages/addeditStage.dart';
-import 'package:pflutter/pages/editStage.dart';
+
 import 'package:flutter/material.dart';
 
+import 'pages/signup.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +21,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/stage': (context) =>  Stages(),
+        '/': (context) => signup(),
+        '/stage': (context) => Stages(),
+        '/formation': (context) => FormationPage(),
         '/add-stage': (context) => const AddEditStage(),
-       
       },
     );
   }

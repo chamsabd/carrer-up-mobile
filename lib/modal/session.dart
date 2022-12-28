@@ -1,18 +1,25 @@
 class Session {
   int? id;
-  String nom;
-  int idFormation;
+  String? nom;
+  int? idFormation;
   DateTime? date_debut;
   DateTime? date_fin;
-  int nbrplace;
+  int? nbrplace;
+  int? idReponsable;
+  String? etat;
+  int? formation_id;
 
-  Session(
-      {required this.id,
-      required this.nom,
-      required this.idFormation,
-      this.date_debut,
-      this.date_fin,
-     required  this.nbrplace});
+  Session({
+    required this.id,
+    required this.nom,
+    required this.idFormation,
+    required this.date_debut,
+    required this.date_fin,
+    this.etat,
+    this.formation_id,
+    required this.nbrplace,
+    this.idReponsable,
+  });
 
   factory Session.fromJson(Map<String, dynamic> json) {
     return Session(
@@ -20,8 +27,14 @@ class Session {
       nom: json['nom'],
       idFormation: json['idFormation'],
       nbrplace: json['nbr_places'],
-      date_debut:json['date_debut']==null?null: DateTime.parse(json['date_debut'] ),
-      date_fin:json['date_fin']==null?null: DateTime.parse(json['date_fin']),
+      etat: json["etat"],
+      idReponsable: json["idReponsable"],
+      formation_id: json["formation_id"],
+      date_debut: json['date_debut'] == null
+          ? null
+          : DateTime.parse(json['date_debut']),
+      date_fin:
+          json['date_fin'] == null ? null : DateTime.parse(json['date_fin']),
     );
   }
 }

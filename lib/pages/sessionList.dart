@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pflutter/modal/session.dart';
+
+import '../modal/Session.dart';
 
 Widget SessionL(Session session) {
   return Container(
@@ -45,7 +46,7 @@ Widget SessionL(Session session) {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              session.nom,
+                              session.nom!,
                               textAlign: TextAlign.start,
                               maxLines: 1,
                               overflow: TextOverflow.clip,
@@ -86,7 +87,11 @@ Widget SessionL(Session session) {
                       Expanded(
                         flex: 1,
                         child: Text(
-                      session.date_debut==null && session.date_fin==null?"":session.date_debut.toString() +" / "+session.date_fin.toString() ,
+                          session.date_debut == null && session.date_fin == null
+                              ? ""
+                              : session.date_debut.toString() +
+                                  " / " +
+                                  session.date_fin.toString(),
                           textAlign: TextAlign.start,
                           maxLines: 1,
                           overflow: TextOverflow.clip,
