@@ -1,11 +1,12 @@
 
+import 'package:pflutter/pages/login.dart';
+import 'package:pflutter/pages/verification.dart';
+
 import 'pages/formationMain.dart';
 import 'package:pflutter/pages/Stages.dart';
 import 'package:pflutter/pages/addeditStage.dart';
 
 import 'package:flutter/material.dart';
-import 'package:pflutter/pages/getDemandeList.dart';
-import 'package:pflutter/pages/getInscritList.dart';
 
 import 'pages/signup.dart';
 
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/stage': (context) => Stages(),
         '/formation': (context) => FormationPage(),
         '/add-stage': (context) => const AddEditStage(),
+       '/verification': (context) =>  verification(),
+       '/login': (context) =>  login(),
       },
 
     );

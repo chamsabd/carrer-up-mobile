@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart';
 
-import '../modal/session.dart';
 import '../modal/stage.dart';
 import 'package:http/http.dart' as http;
 

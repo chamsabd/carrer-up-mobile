@@ -301,38 +301,40 @@ class _AddEditStage extends State<AddEditStage> {
               isMultiline: true,
             ),
           ),
-         
-        isEditMode?  Padding(
-            padding: const EdgeInsets.only(
-              bottom: 10,
-              top: 10,
-            ),
-            child: FormHelper.dropDownWidget(
-             context,
-    "Select",
-    stage!.available,
-    [{"label":"available","val":true},
-    {"label":"not available","val":false}],
-    (onChangedVal) {
-        stage!.available = onChangedVal! ?? "";
-    },
-    (onValidateVal) {
-        if (onValidateVal == null) {
-            return 'Please Select ';
-        }
+          isEditMode
+              ? Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 10,
+                    top: 10,
+                  ),
+                  child: FormHelper.dropDownWidget(
+                    context,
+                    "Select",
+                    stage!.available,
+                    [
+                      {"label": "available", "val": true},
+                      {"label": "not available", "val": false}
+                    ],
+                    (onChangedVal) {
+                      stage!.available = onChangedVal! ?? "";
+                    },
+                    (onValidateVal) {
+                      if (onValidateVal == null) {
+                        return 'Please Select ';
+                      }
 
-        return null;
-    },
-   
-    optionValue: "val",
-    optionLabel: "label",
-    borderFocusColor: Theme.of(context).primaryColor,
-    borderColor: Theme.of(context).primaryColor,
-    borderRadius: 10,
-            ),
-          ):const SizedBox(
-            height: 5,
-          ),
+                      return null;
+                    },
+                    optionValue: "val",
+                    optionLabel: "label",
+                    borderFocusColor: Theme.of(context).primaryColor,
+                    borderColor: Theme.of(context).primaryColor,
+                    borderRadius: 10,
+                  ),
+                )
+              : const SizedBox(
+                  height: 5,
+                ),
           const SizedBox(
             height: 20,
           ),
