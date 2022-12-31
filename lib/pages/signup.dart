@@ -278,7 +278,9 @@ class signup extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => login()),
+                                        builder: (context) => MyHomePage(
+                                              title: '',
+                                            )),
                                   );
                                 },
                                 child: Text(

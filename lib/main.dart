@@ -1,4 +1,3 @@
-
 import 'pages/formationMain.dart';
 import 'package:pflutter/pages/Stages.dart';
 import 'package:pflutter/pages/addeditStage.dart';
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -27,12 +25,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => signup(),
         '/stage': (context) => Stages(),
+        '/demande': (context) => MyDemandePage(),
+        '/inscrit': (context) => MyInscritPage(),
         '/formation': (context) => FormationPage(),
         '/add-stage': (context) => const AddEditStage(),
       },
-
     );
   }
 }
-
-
