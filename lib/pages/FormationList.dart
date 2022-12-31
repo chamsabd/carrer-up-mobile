@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 import '../modal/Formation.dart';
+import 'drawer.dart';
 import 'itemFormation.dart';
-import 'formationMain.dart';
+
 import '../services/fservice.dart';
 
 class Formationlist extends StatefulWidget {
@@ -15,6 +16,8 @@ class Formationlist extends StatefulWidget {
 }
 
 class _FormationlistState extends State<Formationlist> {
+  final GlobalKey<ScaffoldState> _drawerscaffoldkey =
+        new GlobalKey<ScaffoldState>();
   // List<Formation> products = List<Formation>.empty(growable: true);
   bool isApiCallProcess = false;
   @override
@@ -26,9 +29,37 @@ class _FormationlistState extends State<Formationlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NodeJS - CRUD'),
-        elevation: 0,
-      ),
+          elevation: 4,
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xff3a57e8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          title: Text(
+            "CarrerUp",
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+              fontSize: 20,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              //on drawer menu pressed
+              if (_drawerscaffoldkey.currentState!.isDrawerOpen) {
+                //if drawer is open, then close the drawer
+                Navigator.pop(context);
+              } else {
+                _drawerscaffoldkey.currentState!.openDrawer();
+                //if drawer is closed then open the drawer.
+              }
+            },
+            icon: Icon(Icons.menu),
+          ), // Set menu icon at leading of AppBar
+        ),
+        key: _drawerscaffoldkey,
+        drawer: drawer(),
       backgroundColor: Colors.grey[200],
       body: ProgressHUD(
         child: loadProducts(),

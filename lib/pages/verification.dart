@@ -7,7 +7,7 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 import '../config.dart';
 import '../modal/User.dart';
-import '../services/signup_service.dart';
+import '../services/auth_service.dart';
 
 class verification extends StatefulWidget {
   const verification({Key? key}) : super(key: key);
@@ -169,7 +169,7 @@ class _verification extends State<verification> {
                           );
                         });
                   } else {
-                    SignUPService.save(user).then(
+                    AuthService.save(user).then(
                       (response) {
                         var c = response as Map<String, dynamic>;
                         var d = c["statusCode"] as int;

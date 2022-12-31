@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import './signup.dart';
 
 import 'categories.dart';
-import 'formationMain.dart';
 
 class drawer extends StatelessWidget {
   @override
@@ -52,10 +51,16 @@ class drawer extends StatelessWidget {
             ),
             title: const Text('Your Trainig Courses'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FormationPage()),
-              );
+              Navigator.pushNamed(context, "/formation");
+            },
+          ),
+           ListTile(
+            leading: Icon(
+              Icons.logout,
+            ),
+            title: const Text('log out'),
+            onTap: () {
+             // Navigator.pushNamed(context, "/formation");
             },
           ),
         ],

@@ -1,5 +1,5 @@
-List<User> stagesFromJson(dynamic str) =>
-    List<User>.from((str).map((x) => User.fromJson(x)));
+// List<User> stagesFromJson(dynamic str) =>
+//     List<User>.from((str).map((x) => User.fromJson(x)));
 
 class User {
   String? id;
@@ -54,8 +54,9 @@ class User {
     if (nom != null) {
       _data['nom'] = nom.toString();
     }
-
-    _data['email'] = email.toString();
+    if (email != null) {
+      _data['email'] = email.toString();
+    }
 
     if (prenom != null) {
       _data['prenom'] = prenom.toString();

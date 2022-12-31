@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../config.dart';
 import '../modal/Demande.dart';
 import 'dart:convert';
@@ -29,8 +30,15 @@ class _MyInscritPageState extends State<MyInscritPage> {
   }
 
   Future<void> fetchInscrits() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
+
     var response = await http.get(
-   url
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': token
+      },
     );
 
     if (response.statusCode == 200) {

@@ -1,8 +1,7 @@
-
+import 'package:pflutter/pages/FormationList.dart';
 import 'package:pflutter/pages/login.dart';
 import 'package:pflutter/pages/verification.dart';
 
-import 'pages/formationMain.dart';
 import 'package:pflutter/pages/Stages.dart';
 import 'package:pflutter/pages/addeditStage.dart';
 
@@ -20,22 +19,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/': (context) => signup(),
+        '/': (context) => login(),
         '/stage': (context) => Stages(),
-        '/formation': (context) => FormationPage(),
+        '/formation': (context) => Formationlist(),
         '/add-stage': (context) => const AddEditStage(),
-       '/verification': (context) =>  verification(),
-       '/login': (context) =>  login(),
+        '/verification': (context) => verification(),
       },
-
     );
   }
 }
-
-

@@ -5,7 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-import 'package:pflutter/services/signup_service.dart';
+import 'package:pflutter/services/auth_service.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import '../config.dart';
 
@@ -115,11 +115,7 @@ class _signup extends State<signup> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => login()),
-                                  );
+                                  Navigator.pushNamed(context, "/");
                                 },
                                 child: const Text(
                                   "Login",
@@ -489,7 +485,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   if (_formKey.currentState!.validate()) {
                     log(user.toJson().toString());
 
-                    SignUPService.code(user).then(
+                    AuthService.code(user).then(
                       (response) {
                         log("response " + response.toString());
                         var c = response as Map<String, dynamic>;

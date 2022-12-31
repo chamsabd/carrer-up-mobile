@@ -85,12 +85,12 @@ class _StageState extends State<Stages> {
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),
-        child: loadProducts(),
+        child: loadStages(),
       ),
     );
   }
 
-  Widget loadProducts() {
+  Widget loadStages() {
     // stages =  stageService.getStages() ;
     debugPrint('data: ' + stages.toString());
     // if (stages!=[]) {
