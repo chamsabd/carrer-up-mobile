@@ -21,7 +21,8 @@ class AuthService {
     var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
-      "Accept": "*/*"
+      "Accept": "*/*",
+      "Access-Control-Allow-Origin": "*"
     };
     request.headers.addAll(userHeader);
     request.body = json.encode(model.toJson());
@@ -76,7 +77,8 @@ class AuthService {
     var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
-      "Accept": "*/*"
+      "Accept": "*/*",
+      "Access-Control-Allow-Origin": "*"
     };
     request.headers.addAll(userHeader);
     request.body = json.encode(model.toJson());
@@ -126,7 +128,8 @@ class AuthService {
     //var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
-      "Accept": "*/*"
+      "Accept": "*/*",
+      "Access-Control-Allow-Origin": "*"
     };
     // request.headers.addAll(userHeader);
     // request.body = json.encode(model.toJson());
@@ -151,7 +154,6 @@ class AuthService {
       } else {
         try {
           var map = jsonDecode(responsed.body);
-          debugPrint("stauscode " + responsed.statusCode.toString());
           String message = map['message'] ?? "unauthorized";
           return {
             'message': message,
@@ -167,21 +169,29 @@ class AuthService {
       }
     } catch (e) {
       debugPrint(e.toString());
-      print(DateTime.now().millisecondsSinceEpoch - time1); // Print about 13s
-      return {"erreur": e, "statusCode": 3000};
+       return {"erreur": e, "statusCode": 3000};
     }
   }
-
-  static Future<bool> validate() async {
+ get  role   async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role') ?? "";
+  }
+  Future<String> roles()   async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role') ?? "";
+  }
+  static Future<Map<String, dynamic>> validate() async {
     var url = Uri.http(Config.apiURL, Config.validateAPI);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
-    debugPrint("validate " + token);
+    String role = prefs.getString('role') ?? "";
+
     //var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
       "Accept": "*/*",
-      "Authorization": token
+      "Authorization": token,
+      "Access-Control-Allow-Origin": "*"
     };
     // request.headers.addAll(userHeader);
     // request.body = json.encode(model.toJson());
@@ -190,12 +200,16 @@ class AuthService {
       var responsed = await http.get(url, headers: userHeader);
 
       if (responsed.statusCode == 200) {
-        return true;
+        return {"logedin": true, "role": role};
       } else {
-        return false;
+        return {
+          "logedin": false,
+        };
       }
     } catch (e) {
-      return false;
+      return {
+        "logedin": false,
+      };
     }
   }
 }

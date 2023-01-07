@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:vrouter/vrouter.dart';
 import '../modal/stage.dart';
 
 class stageitem extends StatelessWidget {
   final Stage stage;
+  final String role;
   final Function? onDelete;
 
   stageitem({
     Key? key,
     required this.stage,
+     required this.role,
     this.onDelete,
   }) : super(key: key);
 
@@ -131,7 +136,7 @@ class stageitem extends StatelessWidget {
             ),
           ),
         ),
-        Container(
+       role=="ROLE_RH"?  Container(
 
             //width: MediaQuery.of(context).size.width - 180,
             child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -155,7 +160,7 @@ class stageitem extends StatelessWidget {
               onDelete!(stage);
             },
           )
-        ])),
+        ])):Container(),
       ],
     );
 

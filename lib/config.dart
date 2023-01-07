@@ -1,6 +1,6 @@
 class Config {
   static const String appName = "Formation App";
-  static const String apiURL = '192.168.137.1:8085';
+  static const String apiURL = '192.168.1.22:8085';
   static const String formationUrl = "/formation-server/formations";
   static const String sessionUrl = "/formation-server/Sessions";
   static const stageAPI = "/stage-server/stages";

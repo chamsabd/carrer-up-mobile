@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -56,8 +57,9 @@ class _AddEditStage extends State<AddEditStage> {
     Future.delayed(Duration.zero, () {
       if (ModalRoute.of(context)?.settings.arguments != null) {
         final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
-
-        stage = arguments['stage'];
+        
+        
+        stage = arguments['stage'] as Stage;
         isEditMode = true;
         setState(() {});
       }
@@ -84,11 +86,10 @@ class _AddEditStage extends State<AddEditStage> {
 
   bool showDateD = false;
   bool showDate = false;
-  // Select for Date
+ 
   Future<DateTime> _selectDateD(
       BuildContext context, DateTime first, DateTime last) async {
-    // stage?.dateFin ?? DateTime(2025),
-    //DateTime(2000)
+   
     final selected = await showDatePicker(
       context: context,
       initialDate: stage!.datedebut ?? DateTime.now(),
@@ -316,7 +317,8 @@ class _AddEditStage extends State<AddEditStage> {
                       {"label": "not available", "val": false}
                     ],
                     (onChangedVal) {
-                      stage!.available = onChangedVal! ?? "";
+                      debugPrint(onChangedVal);
+                      stage!.available = onChangedVal!.toLowerCase() != "false";
                     },
                     (onValidateVal) {
                       if (onValidateVal == null) {
@@ -351,21 +353,23 @@ class _AddEditStage extends State<AddEditStage> {
 
                   StageService.saveStage(stage!, isEditMode).then(
                     (response) {
+                      log("response save" + response.toString());
                       setState(() {
                         isApiCallProcess = false;
                       });
-                      log("response " + stage!.toJson().toString());
-                      if (response) {
+                      var c = response as Map<String, dynamic>;
+                      var d = c["statusCode"] as int;
+                      if (d == 200) {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
-                          '/',
+                          '/stage',
                           (route) => false,
                         );
                       } else {
                         FormHelper.showSimpleAlertDialog(
                           context,
                           Config.appName,
-                          "Error occur",
+                          c["erreur"],
                           "OK",
                           () {
                             Navigator.of(context).pop();
