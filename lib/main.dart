@@ -1,3 +1,4 @@
+
 import 'dart:html';
 
 import 'package:pflutter/pages/FormationList.dart';
@@ -5,6 +6,7 @@ import 'package:pflutter/pages/Users.dart';
 import 'package:pflutter/pages/accessdenied.dart';
 import 'package:pflutter/pages/login.dart';
 import 'package:pflutter/pages/verification.dart';
+
 
 import 'package:pflutter/pages/Stages.dart';
 import 'package:pflutter/pages/addeditStage.dart';
@@ -30,7 +32,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
+
         '/': (context) => check(login()),
+         '/demande': (context) => MyDemandePage(),
+        '/inscrit': (context) => MyInscritPage(),
         '/login': (context) => check(login()),
         '/stage': (context) => check(Stages()),
         '/signup': (context) => check(signup()),
@@ -94,4 +99,5 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
 }

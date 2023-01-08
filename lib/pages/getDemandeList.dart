@@ -8,30 +8,32 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
 
+import '../modal/Formation.dart';
+import '../services/fservice.dart';
+
 class MyDemandePage extends StatefulWidget {
-  const MyDemandePage({super.key, required this.title});
-
-  final String title;
-
   @override
   State<MyDemandePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyDemandePage> {
   //final String url = 'http://192.168.1.6:8085/INSCRIT-SERVICE/inscrit';
-var url = Uri.http(Config.apiURL, Config.inscritAPI);
+  var url = Uri.http(Config.apiURL, Config.inscritAPI);
   List<dynamic> _demandes = [];
   bool loading = true;
+  List<dynamic> _Formation = [];
+
   @override
   void initState() {
     fetchDemandes();
-
+    Fservice.fetchFormations();
     //accepter();
     // refuser();
     super.initState();
   }
 
   Future<void> fetchDemandes() async {
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
      String token=  prefs.getString('token')??"";
 
@@ -42,6 +44,7 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
               'Authorization':token
             },
     );
+
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -56,6 +59,7 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
   }
 
   Future<Demande> accepter(String id) async {
+
     var url = Uri.http(Config.apiURL, Config.inscritAPI+"/accept");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
      String token=  prefs.getString('token')??"";
@@ -70,6 +74,7 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
               'etat': "accepted",
               'id': id,
             }));
+
 
     if (response.statusCode == 200) {
       setState(() {
@@ -97,6 +102,7 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
   }
 
   Future<Demande> refuser(String id) async {
+
      var url = Uri.http(Config.apiURL, Config.inscritAPI+"/refuse");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
      String token=  prefs.getString('token')??"";
@@ -112,6 +118,7 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
               'etat': "refused",
               'id': id,
             }));
+
 
     if (response.statusCode == 200) {
       setState(() {
@@ -231,6 +238,7 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
       itemCount: _demandes.length,
       itemBuilder: (context, index) {
         Demande todo = _demandes[index];
+        Formation form = _Formation[index];
         return Card(
             child: Container(
           margin: EdgeInsets.fromLTRB(10, 10, 10, 14),
@@ -260,18 +268,18 @@ var url = Uri.http(Config.apiURL, Config.inscritAPI);
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      // if (todo.idSession==formation.id)
-                      Text(
-                        "Training name : ${todo.idSession} ",
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.clip,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14,
-                          color: Color(0xff000000),
+                      if (todo.idSession == form.id)
+                        Text(
+                          "Training name : ${form.nom} ",
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),

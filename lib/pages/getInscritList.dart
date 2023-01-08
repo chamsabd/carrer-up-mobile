@@ -7,11 +7,10 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
 
+import '../modal/Formation.dart';
+import '../services/fservice.dart';
+
 class MyInscritPage extends StatefulWidget {
-  const MyInscritPage({super.key, required this.title});
-
-  final String title;
-
   @override
   State<MyInscritPage> createState() => _MyInscritPageState();
 }
@@ -19,17 +18,18 @@ class MyInscritPage extends StatefulWidget {
 class _MyInscritPageState extends State<MyInscritPage> {
   var url = Uri.http(Config.apiURL, "${Config.inscritAPI}/accepted");
   //final String url = 'http://192.168.1.6:8085/INSCRIT-SERVICE/inscrit/accepted';
-
+  List<dynamic> _Formation = [];
   List<dynamic> _inscrits = [];
   bool loading = true;
   @override
   void initState() {
     fetchInscrits();
-
+    Fservice.fetchFormations();
     super.initState();
   }
 
   Future<void> fetchInscrits() async {
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
 
@@ -40,6 +40,7 @@ class _MyInscritPageState extends State<MyInscritPage> {
         'Authorization': token
       },
     );
+
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -154,6 +155,7 @@ class _MyInscritPageState extends State<MyInscritPage> {
       itemCount: _inscrits.length,
       itemBuilder: (context, index) {
         Demande todo = _inscrits[index];
+        Formation form = _Formation[index];
         return Card(
             child: Container(
           margin: EdgeInsets.fromLTRB(10, 10, 10, 14),
@@ -183,17 +185,18 @@ class _MyInscritPageState extends State<MyInscritPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Text(
-                        "Training name : ${todo.idSession} ",
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.clip,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14,
-                          color: Color(0xff000000),
+                      if (todo.idSession == form.id)
+                        Text(
+                          "Training name : ${form.nom} ",
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
