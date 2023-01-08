@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:pflutter/pages/FormationList.dart';
+import 'package:pflutter/pages/Users.dart';
 import 'package:pflutter/pages/accessdenied.dart';
 import 'package:pflutter/pages/login.dart';
 import 'package:pflutter/pages/verification.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => check(signup()),
         '/formation': (context) => Formationlist(),
         '/add-stage': (context) => check(AddEditStage()),
+        '/users': (context) => check(Users()),
         '/verification': (context) => check(verification()),
         '/accessdenied': (context) => access(),
       },

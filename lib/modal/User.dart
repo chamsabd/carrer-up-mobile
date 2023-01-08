@@ -1,5 +1,7 @@
-// List<User> stagesFromJson(dynamic str) =>
-//     List<User>.from((str).map((x) => User.fromJson(x)));
+import 'package:pflutter/modal/Role.dart';
+
+List<User> usersFromJson(dynamic str) =>
+    List<User>.from((str).map((x) => User.fromJson(x)));
 
 class User {
   String? id;
@@ -11,33 +13,40 @@ class User {
 
   String? email;
 
-  String? roles;
-
   String? password;
 
   String? confirmpassword;
 
   String? code;
 
-  User({
-    this.id,
-    this.nom,
-    this.prenom,
-    this.username,
-    this.email,
-    this.roles,
-    this.password,
-    this.confirmpassword,
-  });
+  User(
+      {this.id,
+      this.nom,
+      this.prenom,
+      this.username,
+      this.email,
+      this.password,
+      this.confirmpassword = "",
+      this.code = ""});
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, String> json) {
+    // debugPrint("roles in user " + json['roles']);
+    // var list = json['roles'] as List;
+    // debugPrint("roles in user " + list.toString());
+    // List<Role> rolesList = list.map<Role>((i) => Role.fromJson(i)).toList();
+    // //  rolesFromJson(list).toList()
+    // debugPrint("roles in user " + rolesList.toString());
     return User(
-        id: json['_id'],
-        nom: json['nom'],
-        prenom: json['prenom'],
-        username: json['username'],
-        email: json['email'],
-        password: json['password']);
+        id: json['id'] as String?,
+        nom: json['nom'] as String?,
+        prenom: json['prenom'] as String?,
+        username: json['username'] as String?,
+        email: json['email'] as String?,
+        password: json['password'] as String?,
+        confirmpassword: "",
+        code: ""
+        //  roles: rolesList.,
+        );
   }
 
   Map<String, String> toJson() {
@@ -49,7 +58,7 @@ class User {
       _data['username'] = username.toString();
     }
     if (id != null) {
-      _data['_id'] = id.toString();
+      _data['id'] = id.toString();
     }
     if (nom != null) {
       _data['nom'] = nom.toString();

@@ -9,4 +9,5 @@ class Config {
   static const validateAPI = "/auth-server/api/v1/validateToken";
   static const signupAPI = "/auth-server/signup";
   static const loginAPI = "/auth-server/signin";
+  static const GetAllUsersAPI = "/auth-server/user";
 }

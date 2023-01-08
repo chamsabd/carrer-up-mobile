@@ -130,7 +130,6 @@ class _FormationlistState extends State<Formationlist> {
                       setState(() {
                         isApiCallProcess = true;
                       });
-
                       Fservice.deleteFormation(model.id).then(
                         (response) {
                           setState(() {

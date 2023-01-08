@@ -25,11 +25,11 @@ final SharedPreferences prefs = await SharedPreferences.getInstance();
     // ignore: close_sinks
     var response = await client.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
-      log("ttttttttttttt");
+      
       //log(jsonDecode(response.body)["content"].toString());
       final parsed = jsonDecode(response.body)["content"] as List;
       log(parsed.toString());
-      log("hjhjhjhjjjhj");
+     
 
       return parsed.map<Formation>((json) => Formation.fromJson(json)).toList();
     } else {
