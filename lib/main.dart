@@ -1,3 +1,6 @@
+
+import 'package:pflutter/pages/AddEditSession.dart';
+
 import 'dart:html';
 
 import 'package:pflutter/pages/FormationList.dart';
@@ -35,6 +38,10 @@ class MyApp extends StatelessWidget {
         '/stage': (context) => check(Stages()),
         '/signup': (context) => check(signup()),
         '/formation': (context) => Formationlist(),
+
+        
+        '/add-session': (context) => const AddEditSession(),
+
         '/add-stage': (context) => check(AddEditStage()),
         '/users': (context) => check(Users()),
         '/verification': (context) => check(verification()),
@@ -91,6 +98,7 @@ class MyApp extends StatelessWidget {
         // } else {
         //   return login();
         // }
+
       },
     );
   }

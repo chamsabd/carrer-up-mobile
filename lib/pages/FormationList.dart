@@ -17,9 +17,10 @@ class Formationlist extends StatefulWidget {
 
 class _FormationlistState extends State<Formationlist> {
   final GlobalKey<ScaffoldState> _drawerscaffoldkey =
-        new GlobalKey<ScaffoldState>();
+      new GlobalKey<ScaffoldState>();
   // List<Formation> products = List<Formation>.empty(growable: true);
   bool isApiCallProcess = false;
+  var _isShown = false;
   @override
   void initState() {
     super.initState();
@@ -29,37 +30,37 @@ class _FormationlistState extends State<Formationlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          elevation: 4,
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          backgroundColor: Color(0xff3a57e8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          title: Text(
-            "CarrerUp",
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: 20,
-            ),
-          ),
-          leading: IconButton(
-            onPressed: () {
-              //on drawer menu pressed
-              if (_drawerscaffoldkey.currentState!.isDrawerOpen) {
-                //if drawer is open, then close the drawer
-                Navigator.pop(context);
-              } else {
-                _drawerscaffoldkey.currentState!.openDrawer();
-                //if drawer is closed then open the drawer.
-              }
-            },
-            icon: Icon(Icons.menu),
-          ), // Set menu icon at leading of AppBar
+        elevation: 4,
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        backgroundColor: Color(0xff3a57e8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
         ),
-        key: _drawerscaffoldkey,
-        drawer: drawer(),
+        title: Text(
+          "CarrerUp",
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.normal,
+            fontSize: 20,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            //on drawer menu pressed
+            if (_drawerscaffoldkey.currentState!.isDrawerOpen) {
+              //if drawer is open, then close the drawer
+              Navigator.pop(context);
+            } else {
+              _drawerscaffoldkey.currentState!.openDrawer();
+              //if drawer is closed then open the drawer.
+            }
+          },
+          icon: Icon(Icons.menu),
+        ), // Set menu icon at leading of AppBar
+      ),
+      key: _drawerscaffoldkey,
+      drawer: drawer(),
       backgroundColor: Colors.grey[200],
       body: ProgressHUD(
         child: loadProducts(),
@@ -113,10 +114,10 @@ class _FormationlistState extends State<Formationlist> {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    '/add-product',
+                    '/add-formation',
                   );
                 },
-                child: const Text('Add Product'),
+                child: const Text('Add Formation'),
               ),
               ListView.builder(
                 shrinkWrap: true,
@@ -128,13 +129,44 @@ class _FormationlistState extends State<Formationlist> {
                     model: _formations[index],
                     onDelete: (Formation model) {
                       setState(() {
-                        isApiCallProcess = true;
+                        _isShown = true;
                       });
-                      Fservice.deleteFormation(model.id).then(
-                        (response) {
-                          setState(() {
-                            isApiCallProcess = false;
-                          });
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext ctx) {
+                          return AlertDialog(
+                            title: const Text('Please Confirm'),
+                            content:
+                                const Text('Are you sure you want to process?'),
+                            actions: [
+                              // The "Yes" button
+                              TextButton(
+                                  onPressed: () {
+                                    Fservice.deleteFormation(model.id).then(
+                                      (response) {
+                                        setState(() {
+                                          isApiCallProcess = false;
+                                        });
+                                      },
+                                    );
+                                    setState(() {
+                                      _isShown = false;
+                                    });
+                                    // Close the dialog
+                                    Navigator.pop(ctx);
+                                  },
+                                  child: const Text('Yes')),
+                              TextButton(
+                                  onPressed: () {
+                                    // Close the dialog
+                                    Navigator.pop(ctx);
+                                  },
+                                  child: const Text('No'))
+                            ],
+                          );
+
+
                         },
                       );
                     },
