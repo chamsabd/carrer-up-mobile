@@ -11,7 +11,7 @@ import 'package:snippet_coder_utils/hex_color.dart';
 
 import '../config.dart';
 import '../modal/Session.dart';
-import '../services/session_service.dart';
+import '../services/sessionService.dart';
 
 class AddEditSession extends StatefulWidget {
   const AddEditSession({Key? key}) : super(key: key);
