@@ -114,10 +114,10 @@ class _FormationlistState extends State<Formationlist> {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    '/add-product',
+                    '/add-formation',
                   );
                 },
-                child: const Text('Add Product'),
+                child: const Text('Add Formation'),
               ),
               ListView.builder(
                 shrinkWrap: true,
@@ -131,6 +131,7 @@ class _FormationlistState extends State<Formationlist> {
                       setState(() {
                         _isShown = true;
                       });
+
                       showDialog(
                         context: context,
                         builder: (BuildContext ctx) {
@@ -164,6 +165,8 @@ class _FormationlistState extends State<Formationlist> {
                                   child: const Text('No'))
                             ],
                           );
+
+
                         },
                       );
                     },

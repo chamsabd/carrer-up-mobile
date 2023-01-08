@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../modal/Role.dart';
 import '../modal/User.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +22,8 @@ class AuthService {
     var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
-      "Accept": "*/*"
+      "Accept": "*/*",
+      "Access-Control-Allow-Origin": "*"
     };
     request.headers.addAll(userHeader);
     request.body = json.encode(model.toJson());
@@ -76,7 +78,8 @@ class AuthService {
     var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
-      "Accept": "*/*"
+      "Accept": "*/*",
+      "Access-Control-Allow-Origin": "*"
     };
     request.headers.addAll(userHeader);
     request.body = json.encode(model.toJson());
@@ -126,7 +129,8 @@ class AuthService {
     //var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
-      "Accept": "*/*"
+      "Accept": "*/*",
+      "Access-Control-Allow-Origin": "*"
     };
     // request.headers.addAll(userHeader);
     // request.body = json.encode(model.toJson());
@@ -151,7 +155,6 @@ class AuthService {
       } else {
         try {
           var map = jsonDecode(responsed.body);
-          debugPrint("stauscode " + responsed.statusCode.toString());
           String message = map['message'] ?? "unauthorized";
           return {
             'message': message,
@@ -167,21 +170,32 @@ class AuthService {
       }
     } catch (e) {
       debugPrint(e.toString());
-      print(DateTime.now().millisecondsSinceEpoch - time1); // Print about 13s
       return {"erreur": e, "statusCode": 3000};
     }
   }
 
-  static Future<bool> validate() async {
+  get role async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role') ?? "";
+  }
+
+  Future<String> roles() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role') ?? "";
+  }
+
+  static Future<Map<String, dynamic>> validate() async {
     var url = Uri.http(Config.apiURL, Config.validateAPI);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
-    debugPrint("validate " + token);
+    String role = prefs.getString('role') ?? "";
+
     //var request = http.Request(requestMethod, url);
     final userHeader = <String, String>{
       "Content-type": "application/json",
       "Accept": "*/*",
-      "Authorization": token
+      "Authorization": token,
+      "Access-Control-Allow-Origin": "*"
     };
     // request.headers.addAll(userHeader);
     // request.body = json.encode(model.toJson());
@@ -190,12 +204,143 @@ class AuthService {
       var responsed = await http.get(url, headers: userHeader);
 
       if (responsed.statusCode == 200) {
-        return true;
+        return {"logedin": true, "role": role};
       } else {
-        return false;
+        return {
+          "logedin": false,
+        };
       }
     } catch (e) {
-      return false;
+      return {
+        "logedin": false,
+      };
+    }
+  }
+
+  // Future<List<User>> getall() async {
+  //   var url = Uri.http(Config.apiURL, Config.GetAllUsersAPI);
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String token = prefs.getString('token') ?? "";
+  //   final userHeader = <String, String>{
+  //     "Content-type": "application/json",
+  //     "Accept": "*/*",
+  //     "Access-Control-Allow-Origin": "*",
+  //     "Authorization": token
+  //   };
+
+  //   try {
+  //     var responsed = await client.get(url, headers: userHeader);
+
+  //     if (responsed.statusCode == 200) {
+  //       //  var data = jsonDecode(responsed.body).cast<Map<String, dynamic>>();
+  //       final parsed = jsonDecode(responsed.body).cast<Map<String, dynamic>>();
+  //       debugPrint("avant " + parsed.toString());
+  //       //  Map<String, dynamic> data = json.decode(responsed.body);
+  //       // List<User> users = [];
+
+  //       // List<User> users = [];
+
+  //       // debugPrint("avant " + parsed.length.toString());
+  //       // for (var i = 0; i < parsed.length; i++) {
+  //       //   debugPrint("innn");
+  //       //   User u = new User();
+  //       //   u.id = parsed[i]['id'].toString();
+  //       //   u.nom = parsed[i]['nom'].toString();
+  //       //   u.prenom = parsed[i]['prenom'].toString();
+  //       //   u.email = parsed[i]['email'].toString();
+  //       //   debugPrint("roles " + parsed[i]['roles'].length.toString());
+
+  //       //   List<Role> r = [];
+  //       //   for (var j = 0; j < parsed[i]['roles'].length; j++) {
+  //       //     Role ro = new Role();
+  //       //     ro.id = parsed[j]['id'];
+  //       //     ro.name = parsed[j]['name'];
+
+  //       //     r.add(ro);
+  //       //   }
+
+  //       //   u.roles = r;
+
+  //       //   users.add(u);
+  //       // }
+  //       // for (var u in parsed) {
+  //       //   debugPrint("user  " + u.toString());
+  //       //   User user = u;
+  //       //   users.add(user);
+  //       // }
+  //       // return users;
+  //       //   debugPrint("user  " + users.toString());
+  //       // usersFromJson(parsed).toList() parsed.map((i) => User.fromJson(i)).toList()
+  //       // parsed.map<User>((json) => User.fromJson(json)).toList();
+  //       return usersFromJson(parsed);
+  //     } else {
+  //       throw Exception('Failed to load data');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
+
+static Future<List<User>> getall() async {
+    //var response = await http.get(Uri.parse(url));
+final SharedPreferences prefs = await SharedPreferences.getInstance();
+     String token=  prefs.getString('token')??"";
+
+    Map<String, String> requestHeaders = {'content-type': 'application/json',
+    'Authorization':token};
+    var url = Uri.http(Config.apiURL, Config.GetAllUsersAPI);
+    // ignore: close_sinks
+    var response = await client.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      
+      //log(jsonDecode(response.body)["content"].toString());
+      final parsed = jsonDecode(response.body)as List;
+
+      return parsed.map<User>((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+
+
+  Future<Map<String, dynamic>> updateuser(User model, bool isEditMode) async {
+    var stageURL = Config.GetAllUsersAPI;
+
+    var url = Uri.http(Config.apiURL, stageURL);
+
+    var requestMethod = "PUT";
+
+    var request = http.Request(requestMethod, url);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
+
+    Map<String, String> userHeader = {
+      'content-type': 'application/json',
+      'Authorization': token
+    };
+
+    request.headers.addAll(userHeader);
+    // request.fields["sujet"] = model.sujet;
+    if (model.id != null && model.id != "") {
+      // request.fields['_id'] = model.id!;
+    }
+
+    request.body = json.encode(model.toJson());
+    try {
+      var response = await request.send();
+      // var responsed = await http.Response.fromStream(response);
+      if (response.statusCode == 200) {
+        return {'message': "done !", "statusCode": response.statusCode};
+      } else {
+        return {
+          "erreur": "Unauthorized!",
+          "statusCode": response.statusCode,
+        };
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return {"erreur": e, "statusCode": 3000};
     }
   }
 }
