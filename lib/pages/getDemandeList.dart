@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../config.dart';
 import '../modal/Demande.dart';
 import 'dart:convert';
@@ -32,7 +33,18 @@ class _MyHomePageState extends State<MyDemandePage> {
   }
 
   Future<void> fetchDemandes() async {
-    var response = await http.get(url);
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+     String token=  prefs.getString('token')??"";
+
+    var response = await http.get(
+     url ,
+     headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization':token
+            },
+    );
+
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -47,15 +59,22 @@ class _MyHomePageState extends State<MyDemandePage> {
   }
 
   Future<Demande> accepter(String id) async {
-    var url = Uri.http(Config.apiURL, Config.inscritAPI + "/accept");
-    final response = await http.put(url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'etat': "accepted",
-          'id': id,
-        }));
+
+    var url = Uri.http(Config.apiURL, Config.inscritAPI+"/accept");
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+     String token=  prefs.getString('token')??"";
+
+    final response =
+        await http.put(url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization':token
+            },
+            body: jsonEncode(<String, String>{
+              'etat': "accepted",
+              'id': id,
+            }));
+
 
     if (response.statusCode == 200) {
       setState(() {
@@ -83,15 +102,23 @@ class _MyHomePageState extends State<MyDemandePage> {
   }
 
   Future<Demande> refuser(String id) async {
-    var url = Uri.http(Config.apiURL, Config.inscritAPI + "/refuse");
-    var response = await http.put(url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'etat': "refused",
-          'id': id,
-        }));
+
+     var url = Uri.http(Config.apiURL, Config.inscritAPI+"/refuse");
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+     String token=  prefs.getString('token')??"";
+
+   
+    var response =
+        await http.put(url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization':token
+            },
+            body: jsonEncode(<String, String>{
+              'etat': "refused",
+              'id': id,
+            }));
+
 
     if (response.statusCode == 200) {
       setState(() {

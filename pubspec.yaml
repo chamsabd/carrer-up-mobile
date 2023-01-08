@@ -44,6 +44,10 @@ dependencies:
   snippet_coder_utils: ^1.0.12
   date_format: ^2.0.7
   flutter_otp_text_field: ^1.1.1
+  email_validator: ^2.1.17
+  shared_preferences: ^2.0.15
+  vrouter: ^1.2.1
+  lottie: ^2.1.0
 
 
 dev_dependencies:

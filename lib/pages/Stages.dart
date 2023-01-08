@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:pflutter/pages/stageitem.dart';
+import 'package:pflutter/services/auth_service.dart';
 
 import 'package:pflutter/services/stage_service.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 import '../config.dart';
 import '../modal/stage.dart';
+import 'drawer.dart';
 
 class Stages extends StatefulWidget {
   Stages({super.key});
@@ -19,40 +22,22 @@ class Stages extends StatefulWidget {
 class _StageState extends State<Stages> {
   bool isApiCallProcess = false;
   var stageService = StageService();
+  var authService = AuthService();
   var _isShown = false;
+  final GlobalKey<ScaffoldState> _drawerscaffoldkey =
+      new GlobalKey<ScaffoldState>();
   List<dynamic> stages = [];
+  var role = "";
   @override
   void initState() {
     //  getStages();
+    authService.roles().then((value) =>
+        {this.role = value, debugPrint("role in init state" + role)});
+
     super.initState();
   }
 
   static var client = http.Client();
-
-  // Future<void> getStages() async {
-  //   Map<String, String> requestHeaders = {
-  //     'Content-Type': 'application/json',
-  //     "Access-Control-Allow-Origin": "*"
-  //   };
-  //   var url = 'http://192.168.1.8:8085/STAGE-SERVER/stages';
-  //   var uri = Uri.http(
-  //     Config.apiURL,
-  //     Config.stageAPI,
-  //   );
-
-  //   debugPrint(url.toString());
-
-  //   var response = await http.get(uri, headers: requestHeaders);
-
-  //   if (response.statusCode == 200) {
-  //     var data = jsonDecode(response.body).cast<Map<String, dynamic>>();
-  //     stages = data.map<Stage>((json) => Stage.fromJson(json)).toList();
-  //     debugPrint("id stage " + stages[0].id.toString());
-  //   } else {
-  //     debugPrint("nnnnn");
-  //     throw Exception('Failed to load data');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,32 +60,33 @@ class _StageState extends State<Stages> {
             color: Color(0xff000000),
           ),
         ),
-        leading: const Icon(
-          Icons.arrow_back,
-          color: Color(0xff212435),
-          size: 24,
-        ),
+        leading: IconButton(
+          onPressed: () {
+            //on drawer menu pressed
+            if (_drawerscaffoldkey.currentState!.isDrawerOpen) {
+              //if drawer is open, then close the drawer
+              Navigator.pop(context);
+            } else {
+              _drawerscaffoldkey.currentState!.openDrawer();
+              //if drawer is closed then open the drawer.
+            }
+          },
+          icon: Icon(Icons.menu),
+        ), // Set menu icon at leading of AppBar
       ),
+      key: _drawerscaffoldkey,
+      drawer: drawer(),
       body: ProgressHUD(
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),
-        child: loadProducts(),
+        child: loadStages(),
       ),
     );
   }
 
-  Widget loadProducts() {
-    // stages =  stageService.getStages() ;
-    debugPrint('data: ' + stages.toString());
-    // if (stages!=[]) {
-
-    //   return list(stages);
-    // } else {
-    //   return const Center(
-    //     child: CircularProgressIndicator(),
-    //   );
-    // }
+  Widget loadStages() {
+    debugPrint("role" + this.role);
     return FutureBuilder<List<Stage>>(
       future: stageService.getStages(),
       initialData: [],
@@ -129,25 +115,26 @@ class _StageState extends State<Stages> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  
-                  minimumSize: const Size(88, 36),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/add-stage',
-                  );
-                },
-                child: const Text('Add stage'),
-              ),
+              role == "ROLE_RH"
+                  ? ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(88, 36),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/add-stage',
+                        );
+                      },
+                      child: const Text('Add stage'),
+                    )
+                  : Container(),
               ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: stages.length,
@@ -157,6 +144,7 @@ class _StageState extends State<Stages> {
                   itemBuilder: (context, index) {
                     return stageitem(
                       stage: stages[index],
+                      role: role,
                       onDelete: (Stage model) {
                         setState(() {
                           _isShown = true;
@@ -164,7 +152,6 @@ class _StageState extends State<Stages> {
                         showDialog(
                           context: context,
                           builder: (BuildContext ctx) {
-                          
                             return AlertDialog(
                               title: const Text('Please Confirm'),
                               content:
@@ -187,7 +174,7 @@ class _StageState extends State<Stages> {
                                         _isShown = false;
                                       });
                                       // Close the dialog
-                                     Navigator.pop(ctx);
+                                      Navigator.pop(ctx);
                                     },
                                     child: const Text('Yes')),
                                 TextButton(
@@ -200,7 +187,6 @@ class _StageState extends State<Stages> {
                             );
                           },
                         );
-                        
                       },
                     );
                   })
