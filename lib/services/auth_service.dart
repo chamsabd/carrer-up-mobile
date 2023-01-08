@@ -178,6 +178,11 @@ class AuthService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('role') ?? "";
   }
+ static clearshared() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.clear();
+  }
+
 
   Future<String> roles() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

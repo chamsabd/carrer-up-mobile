@@ -1,4 +1,3 @@
-
 import 'package:pflutter/pages/AddEditSession.dart';
 
 import 'dart:html';
@@ -6,6 +5,7 @@ import 'dart:html';
 import 'package:pflutter/pages/FormationList.dart';
 import 'package:pflutter/pages/Users.dart';
 import 'package:pflutter/pages/accessdenied.dart';
+import 'package:pflutter/pages/addFormation.dart';
 import 'package:pflutter/pages/login.dart';
 import 'package:pflutter/pages/verification.dart';
 
@@ -38,10 +38,8 @@ class MyApp extends StatelessWidget {
         '/stage': (context) => check(Stages()),
         '/signup': (context) => check(signup()),
         '/formation': (context) => Formationlist(),
-
-        
         '/add-session': (context) => const AddEditSession(),
-
+        '/add-formation': (context) => const FormationAddEdit(),
         '/add-stage': (context) => check(AddEditStage()),
         '/users': (context) => check(Users()),
         '/verification': (context) => check(verification()),
@@ -98,7 +96,6 @@ class MyApp extends StatelessWidget {
         // } else {
         //   return login();
         // }
-
       },
     );
   }

@@ -1,6 +1,7 @@
 ///File download from FlutterViz- Drag and drop a tools. For more details visit https://flutterviz.io/
 
 import 'package:flutter/material.dart';
+import 'package:pflutter/services/auth_service.dart';
 import './signup.dart';
 
 import 'categories.dart';
@@ -54,13 +55,16 @@ class drawer extends StatelessWidget {
               Navigator.pushNamed(context, "/formation");
             },
           ),
-           ListTile(
+          ListTile(
             leading: Icon(
               Icons.logout,
             ),
             title: const Text('log out'),
             onTap: () {
-             // Navigator.pushNamed(context, "/formation");
+              AuthService.clearshared();
+              Navigator.pushNamed(context, "/");
+
+              // Navigator.pushNamed(context, "/formation");
             },
           ),
         ],

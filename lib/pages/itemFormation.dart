@@ -73,7 +73,7 @@ class FormationItem extends StatelessWidget {
                           child: const Icon(Icons.edit),
                           onTap: () {
                             Navigator.of(context).pushNamed(
-                              '/edit-product',
+                              '/add-formation',
                               arguments: {
                                 'model': model,
                               },
