@@ -16,11 +16,13 @@ class Fservice {
   static var client = http.Client();
   static Future<List<Formation>> fetchFormations() async {
     //var response = await http.get(Uri.parse(url));
-final SharedPreferences prefs = await SharedPreferences.getInstance();
-     String token=  prefs.getString('token')??"";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
 
-    Map<String, String> requestHeaders = {'content-type': 'application/json',
-    'Authorization':token};
+    Map<String, String> requestHeaders = {
+      'content-type': 'application/json',
+      'Authorization': token
+    };
     var url = Uri.http(Config.apiURL, Config.formationUrl);
     // ignore: close_sinks
     var response = await client.get(url, headers: requestHeaders);
@@ -46,12 +48,14 @@ final SharedPreferences prefs = await SharedPreferences.getInstance();
     var url = Uri.http(Config.apiURL, furl);
     var requestMethod = isEditMode ? "PUT" : "POST";
     var request = http.Request(requestMethod, url);
- final SharedPreferences prefs = await SharedPreferences.getInstance();
-     String token=  prefs.getString('token')??"";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
 
-    Map<String, String> userHeader = {'content-type': 'application/json',
-    'Authorization':token};
-  
+    Map<String, String> userHeader = {
+      'content-type': 'application/json',
+      'Authorization': token
+    };
+
     request.headers.addAll(userHeader);
     // request.fields["sujet"] = model.sujet;
     if (f.id != null && f.id != "") {
@@ -60,6 +64,7 @@ final SharedPreferences prefs = await SharedPreferences.getInstance();
     }
 
     request.body = json.encode(f.toJson());
+    debugPrint("id stage " + request.body.toString());
 
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
@@ -73,12 +78,14 @@ final SharedPreferences prefs = await SharedPreferences.getInstance();
   }
 
   static Future<bool> deleteFormation(id) async {
-     final SharedPreferences prefs = await SharedPreferences.getInstance();
-     String token=  prefs.getString('token')??"";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
 
-    Map<String, String> requestHeaders = {'content-type': 'application/json',
-    'Authorization':token};
-   
+    Map<String, String> requestHeaders = {
+      'content-type': 'application/json',
+      'Authorization': token
+    };
+
     var url = Uri.http(Config.apiURL, Config.formationUrl + "/" + id);
     var response = await client.delete(url, headers: requestHeaders);
 

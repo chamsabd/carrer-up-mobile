@@ -1,3 +1,6 @@
+List<Session> sessionFromJson(dynamic str) =>
+    List<Session>.from((str).map((x) => Session.fromJson(x)));
+
 class Session {
   int? id;
   String? nom;
@@ -10,14 +13,14 @@ class Session {
   int? formation_id;
 
   Session({
-    required this.id,
-    required this.nom,
-    required this.idFormation,
-    required this.date_debut,
-    required this.date_fin,
+    this.id,
+    this.nom,
+    this.idFormation,
+    this.date_debut,
+    this.date_fin,
     this.etat,
     this.formation_id,
-    required this.nbrplace,
+    this.nbrplace,
     this.idReponsable,
   });
 
@@ -36,5 +39,19 @@ class Session {
       date_fin:
           json['date_fin'] == null ? null : DateTime.parse(json['date_fin']),
     );
+  }
+  Map<String, String> toJson() {
+    final _data = <String, String>{};
+    if (id != null) {
+      _data['_id'] = id.toString();
+    }
+    _data['nom'] = nom.toString();
+    _data['formation_id'] = formation_id.toString();
+    _data['nbr_places'] = nbrplace.toString();
+    _data['date_fin'] = date_fin.toString();
+    _data['date_debut'] = date_debut.toString();
+    _data['etat'] = etat.toString();
+    _data['idReponsable'] = idReponsable.toString();
+    return _data;
   }
 }
