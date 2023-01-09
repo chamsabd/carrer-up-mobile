@@ -36,9 +36,6 @@ class StageService {
       throw Exception('Failed to load data');
     }
   }
-  
-
-
 
   static Future<bool> deleteStage(stageId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -93,12 +90,14 @@ class StageService {
     request.body = json.encode(model.toJson());
     try {
       var response = await request.send();
-      // var responsed = await http.Response.fromStream(response);
+      var responsed = await http.Response.fromStream(response);
       if (response.statusCode == 200) {
         return {'message': "done !", "statusCode": response.statusCode};
       } else {
         return {
-          "erreur": "Unauthorized!",
+          "erreur": responsed.body.isEmpty == false
+              ? responsed.body.toString()
+              : "Unauthorized!",
           "statusCode": response.statusCode,
         };
       }

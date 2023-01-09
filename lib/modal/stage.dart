@@ -3,7 +3,7 @@ List<Stage> stagesFromJson(dynamic str) =>
 
 class Stage {
   late String? id;
-  late String? societe = "socc";
+  late String? societe;
   late String? sujet;
   late String? domaine;
   late DateTime? datedebut;
@@ -20,7 +20,7 @@ class Stage {
       this.description,
       this.domaine,
       this.publishingdate,
-      this.societe = "socc",
+      this.societe,
       this.sujet});
 
   factory Stage.fromJson(Map<String, dynamic> json) {

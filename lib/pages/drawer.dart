@@ -57,6 +57,15 @@ class drawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
+              Icons.book,
+            ),
+            title: const Text('Stages'),
+            onTap: () {
+              Navigator.pushNamed(context, "/stage");
+            },
+          ),
+          ListTile(
+            leading: Icon(
               Icons.logout,
             ),
             title: const Text('log out'),

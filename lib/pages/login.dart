@@ -319,7 +319,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                           FormHelper.showSimpleAlertDialog(
                             context,
                             Config.appName,
-                            c["erreur"],
+                            c["message"],
                             "OK",
                             () {
                               Navigator.of(context).pop();

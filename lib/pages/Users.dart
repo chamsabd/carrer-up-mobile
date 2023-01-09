@@ -35,6 +35,7 @@ class _UserState extends State<Users> {
         {this.role = value, debugPrint("role in init state" + role)});
 
     super.initState();
+    AuthService.getall().then((value) => null);
   }
 
   static var client = http.Client();

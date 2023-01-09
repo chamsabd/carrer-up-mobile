@@ -134,15 +134,12 @@ class AuthService {
     };
     // request.headers.addAll(userHeader);
     // request.body = json.encode(model.toJson());
-    debugPrint("user " + model.toJson().toString());
+   
     var time1 = DateTime.now().millisecondsSinceEpoch;
     try {
       var responsed = await http.post(url,
           body: json.encode(model.toJson()), headers: userHeader);
-      debugPrint("user " + responsed.body.toString());
-
-      debugPrint("stauscode " + responsed.statusCode.toString());
-
+    
       if (responsed.statusCode == 200) {
         var map = jsonDecode(responsed.body);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -178,15 +175,20 @@ class AuthService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('role') ?? "";
   }
- static clearshared() async {
+
+  static clearshared() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.clear();
   }
 
-
   Future<String> roles() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('role') ?? "";
+  }
+
+  Future<String> id() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('id') ?? "";
   }
 
   static Future<Map<String, dynamic>> validate() async {
@@ -286,28 +288,27 @@ class AuthService {
   //   }
   // }
 
-static Future<List<User>> getall() async {
+  static Future<List<User>> getall() async {
     //var response = await http.get(Uri.parse(url));
-final SharedPreferences prefs = await SharedPreferences.getInstance();
-     String token=  prefs.getString('token')??"";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
 
-    Map<String, String> requestHeaders = {'content-type': 'application/json',
-    'Authorization':token};
+    Map<String, String> requestHeaders = {
+      'content-type': 'application/json',
+      'Authorization': token
+    };
     var url = Uri.http(Config.apiURL, Config.GetAllUsersAPI);
-    // ignore: close_sinks
+
     var response = await client.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
-      
-      //log(jsonDecode(response.body)["content"].toString());
-      final parsed = jsonDecode(response.body)as List;
-
-      return parsed.map<User>((json) => User.fromJson(json)).toList();
+      // debugPrint(jsonDecode(response.body).toString());
+      final parsed = jsonDecode(response.body) as List;
+      debugPrint(parsed.toString());
+      return usersFromJson(parsed);
     } else {
       throw Exception('Failed to load data');
     }
   }
-
-
 
   Future<Map<String, dynamic>> updateuser(User model, bool isEditMode) async {
     var stageURL = Config.GetAllUsersAPI;

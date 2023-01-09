@@ -37,14 +37,13 @@ class User {
     // //  rolesFromJson(list).toList()
     // debugPrint("roles in user " + rolesList.toString());
     return User(
-        id: json['id'] as String?,
-        nom: json['nom'] as String?,
-        prenom: json['prenom'] as String?,
-        username: json['username'] as String?,
-        email: json['email'] as String?,
-        password: json['password'] as String?,
-        confirmpassword: "",
-        code: ""
+        id: json['id'],
+        nom: json['nom'],
+        prenom: json['prenom'],
+        username: json['username'] ,
+        email: json['email'] ,
+        password: json['password'] 
+        
         //  roles: rolesList.,
         );
   }
