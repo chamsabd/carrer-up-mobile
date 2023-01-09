@@ -178,7 +178,7 @@ class _FormationAddEditState extends State<FormationAddEdit> {
                 return null;
               },
               (onSavedVal) => {
-                // formation!.prix= onSavedVal,
+                formation!.prix = onSavedVal,
               },
               obscureText: false,
               borderFocusColor: Colors.black,

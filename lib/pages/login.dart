@@ -25,9 +25,7 @@ class _login extends State<login> {
     AuthService.validate().then((response) {
       if (response) {
         Navigator.of(context).pushNamed('/formation');
-      } else {
-         Navigator.of(context).pushNamed('/');
-      }
+      } else {}
     });
     super.initState();
   }
@@ -346,7 +344,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
                 padding: const EdgeInsets.all(16),
                 child: const Text(
-                  "SIGN UP",
+                  "SIGN IN",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
