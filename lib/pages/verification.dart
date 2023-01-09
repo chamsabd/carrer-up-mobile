@@ -194,19 +194,23 @@ class _verification extends State<verification> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: Text(
-                "Resend Code",
-                textAlign: TextAlign.start,
-                overflow: TextOverflow.clip,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 16,
-                  color: Color(0xff3a57e8),
-                ),
-              ),
-            ),
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                child: TextButton(
+                  child: Text(
+                    "return",
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 16,
+                      color: Color(0xff3a57e8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )),
           ],
         ),
       ),

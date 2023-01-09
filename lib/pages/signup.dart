@@ -524,7 +524,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
                 padding: const EdgeInsets.all(16),
                 child: const Text(
-                  "SIGN UP",
+                  "send code",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

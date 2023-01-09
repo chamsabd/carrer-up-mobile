@@ -4,18 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:vrouter/vrouter.dart';
-import '../modal/stage.dart';
+import '../modal/user.dart';
 
-class stageitem extends StatelessWidget {
-  final Stage stage;
+class usersitem extends StatelessWidget {
+  final User user;
   final String role;
-  final Function? onDelete;
 
-  stageitem({
+
+  usersitem({
     Key? key,
-    required this.stage,
+    required this.user,
      required this.role,
-    this.onDelete,
+   
   }) : super(key: key);
 
   @override
@@ -62,7 +62,7 @@ class stageitem extends StatelessWidget {
               children: [
                 Row(children: [
                   Text(
-                    "${stage.societe} | sujet: ${stage.sujet}",
+                    "${user.nom}  ${user.prenom}",
                     textAlign: TextAlign.start,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -73,22 +73,12 @@ class stageitem extends StatelessWidget {
                       color: Color(0xff000000),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.all(0),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: stage.available == true
-                          ? Color.fromARGB(255, 26, 223, 4)
-                          : Color.fromARGB(255, 249, 0, 0),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
+                 
                 ]),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
                   child: Text(
-                    "${stage.domaine}",
+                    "${user.email}",
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.clip,
@@ -103,9 +93,7 @@ class stageitem extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
                   child: Text(
-                    formatDate(stage.datedebut!, [yyyy, '/', mm, '/', dd]) +
-                        " | " +
-                        formatDate(stage.dateFin!, [yyyy, '/', mm, '/', dd]),
+                    user.email.toString(),
                     textAlign: TextAlign.start,
                     maxLines: 2,
                     overflow: TextOverflow.clip,
@@ -117,26 +105,12 @@ class stageitem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                  child: Text(
-                    "${stage.description} ",
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 11,
-                      color: Color(0xff000000),
-                    ),
-                  ),
-                )
+               
               ],
             ),
           ),
         ),
-       role=="ROLE_RH"?  Container(
+        Container(
 
             //width: MediaQuery.of(context).size.width - 180,
             child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -144,23 +118,14 @@ class stageitem extends StatelessWidget {
             child: const Icon(Icons.edit),
             onTap: () {
               Navigator.of(context).pushNamed(
-                '/add-stage',
+                '/add-user',
                 arguments: {
-                  'stage': stage,
+                  'user': user,
                 },
               );
             },
-          ),
-          GestureDetector(
-            child: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            onTap: () {
-              onDelete!(stage);
-            },
           )
-        ])):Container(),
+        ])),
       ],
     );
 
@@ -175,7 +140,7 @@ class stageitem extends StatelessWidget {
     //         crossAxisAlignment: CrossAxisAlignment.start,
     //         children: [
     //           Text(
-    //             " ${stage.sujet}",
+    //             " ${user.sujet}",
     //             style: const TextStyle(
     //               color: Colors.black,
     //               fontWeight: FontWeight.bold,
@@ -185,7 +150,7 @@ class stageitem extends StatelessWidget {
     //             height: 10,
     //           ),
     //           Text(
-    //             " ${stage.datedebut} ${stage.dateFin}",
+    //             " ${user.datedebut} ${user.dateFin}",
     //             style: const TextStyle(color: Colors.black),
     //           ),
 

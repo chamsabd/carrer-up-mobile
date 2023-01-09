@@ -22,11 +22,6 @@ class _login extends State<login> {
 
   @override
   void initState() {
-    AuthService.validate().then((response) {
-      if (response) {
-        Navigator.of(context).pushNamed('/formation');
-      } else {}
-    });
     super.initState();
   }
 
@@ -123,11 +118,7 @@ class _login extends State<login> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => signup()),
-                              );
+                              Navigator.of(context).pushNamed('/signup');
                             },
                             child: Text("SignUp",
                                 textAlign: TextAlign.start,
@@ -323,7 +314,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                           FormHelper.showSimpleAlertDialog(
                             context,
                             Config.appName,
-                            c["message"],
+                            c["erreur"],
                             "OK",
                             () {
                               Navigator.of(context).pop();
