@@ -6,6 +6,8 @@ import 'package:pflutter/pages/FormationList.dart';
 import 'package:pflutter/pages/Users.dart';
 import 'package:pflutter/pages/accessdenied.dart';
 import 'package:pflutter/pages/addFormation.dart';
+import 'package:pflutter/pages/getDemandeList.dart';
+import 'package:pflutter/pages/getInscritList.dart';
 import 'package:pflutter/pages/login.dart';
 import 'package:pflutter/pages/verification.dart';
 
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
         '/users': (context) => check(Users()),
         '/verification': (context) => check(verification()),
         '/accessdenied': (context) => access(),
+        '/demande': (context) => MyDemandePage(title: "demandes"),
+        '/inscrit': (context) => MyInscritPage(title: "inscrit"),
       },
     );
   }

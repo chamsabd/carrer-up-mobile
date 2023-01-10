@@ -88,7 +88,6 @@ class Fservice {
 
     var url = Uri.http(Config.apiURL, Config.formationUrl + "/" + id);
     var response = await client.delete(url, headers: requestHeaders);
-
     if (response.statusCode == 200) {
       log("deleted successfully");
       return true;
